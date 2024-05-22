@@ -2,7 +2,7 @@ import React from 'react'
 
 const Nav = () => {
   return (
-    <div className="navbar bg-base-100 p-4">
+    <div className="navbar bg-base-100 p-8">
         <div className="flex-1">
             <a className="btn btn-ghost text-xl">YGODEX</a>
         </div>
