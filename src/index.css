@@ -18,6 +18,10 @@ html, body, #root {
   flex-wrap: nowrap;
 }
 
+/* .main-cards{
+  padding: 0 256px !important;
+} */
+
 /* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
