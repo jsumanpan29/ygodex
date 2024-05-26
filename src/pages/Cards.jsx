@@ -4,6 +4,7 @@ import cardBackImage from '../assets/CardBack.jpg';
 import { LuSwords, LuShield, LuCalendar } from "react-icons/lu";
 import { GiCardRandom } from "react-icons/gi";
 import { MdOutlineCategory } from "react-icons/md";
+import API from '../api/axios.config'
 const Cards = () => {
 
     // useEffect(() => {
@@ -40,7 +41,7 @@ const Cards = () => {
                     {/* <div className="mask w-52 h-60 m-5">
                         <img src={cardBackImage} alt="Event Image" />
                     </div> */}
-                    <img className="!object-contain !w-[140px] !max-w-[140px] rounded-xl" src={cardBackImage} alt="Event Image" />
+                    <img className="!object-contain !w-[140px] !max-w-[140px] rounded-xl h-fit" src={cardBackImage} alt="Event Image" />
             </div>
             <div class="flex flex-col w-full items-center h-48">
                 <div className='text-xl font-medium pb-4'><h1>Sample</h1></div>
