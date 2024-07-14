@@ -5,11 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import API from '../api/axios.config'
 const Card = () => {
     const {id} = useParams();
-    // const searchKeysWithWord = (obj, word) => {
-    //     const keys = Object.keys(obj);
-    //     const filteredKeys = keys.filter(key => key.includes(word));
-    //     return filteredKeys;
-    // };
     const searchKeysWithWord = (obj, word) => {
         const keys = Object.keys(obj);
         const filteredKeys = keys.filter(key => key.includes(word));
@@ -21,23 +16,15 @@ const Card = () => {
             .then((res) => 
                 {
                     const result = res.data.data
-                    // console.log("result:"+JSON.stringify(result));
                     return result
                 }
             ),
         })
-    // const {data} = useQuery({
-    //     queryKey: ['card'],
-    //     queryFn: () =>
-    //         fetch(`/cardinfo.php?id=${id}`).then((res) =>
-    //           res.json(),
-    //         ),
-    //     })
     if (isLoading) return "Loading...";
     if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div class="container mx-auto flex-auto lg:px-[128px] xl:px-[256px] px-0">
+    <div className="container mx-auto flex-auto lg:px-[128px] xl:px-[256px] px-0">
         
         {/* {console.log(data)} */}
         {/* {data.map((e) => (
@@ -50,28 +37,22 @@ const Card = () => {
                 <li>{data[0]?.id}</li>
             </ul>
         </div>
-        {/* <div class="flex justify-center"><h2 className='prose-lg'>{id}</h2></div> */}
-        <div class="grid grid-cols-1 2xl:grid-cols-3 my-2 gap-10">
+        <div className="grid grid-cols-1 2xl:grid-cols-3 my-2 gap-10">
             <div className='flex flex-col col-span-1'>
                 <img className=" !w-[313px] 2xl:!w-full !min-w-[313px] !max-w-[444px] rounded-xl h-[458px] mx-auto" src={data[0]?.card_images[0]?.image_url ?? cardBackImage} alt="Event Image" />
                 <div className="flex flex-wrap justify-center 2xl:mt-2 mb-auto p-2 2xl:p-0">
-                    {/* {data[0]?.misc_info[0]?.formats?.map((e, index) => (
-                        <div key={index} className="badge badge-success m-0.5">{(!e.toLowerCase() === "goat" || !e.toLowerCase() === "tcg" || !e.toLowerCase() === "ocg") ? e : null}</div>
-
-                        )
-                    )} */}
                     {data[0]?.misc_info[0]?.formats?.map((e, index) => 
                         (
-                            e.toLowerCase() === "goat" || e.toLowerCase() === "tcg" || e.toLowerCase() === "ocg" ? 
+                            (e.toLowerCase() === "goat" && data[0]?.banlist_info) || (e.toLowerCase() === "tcg" && data[0]?.banlist_info) || (e.toLowerCase() === "ocg" && data[0]?.banlist_info) ? 
                                  searchKeysWithWord(data[0]?.banlist_info, e.toLowerCase())[0]?.value.toLowerCase() === "banned" ?
-                                    <div className="badge badge-error m-0.5">{e}</div>
+                                    <div key={index} className="badge badge-error m-0.5">{e}</div>
                                  :
                                     searchKeysWithWord(data[0]?.banlist_info, e.toLowerCase())[0]?.value.toLowerCase() === "limited" ?
-                                        <div className="badge badge-warning m-0.5">{e}</div>
+                                        <div key={index} className="badge badge-warning m-0.5">{e}</div>
                                         :
                                             null
                             :
-                                <div className="badge badge-success m-0.5">{e}</div>
+                                <div key={index} className="badge badge-success m-0.5">{e}</div>
                         )
                     )}
                 </div>
