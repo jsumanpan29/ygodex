@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import cardBackImage from '../assets/CardBack.jpg';
 import { useQuery } from '@tanstack/react-query';
 import API from '../api/axios.config'

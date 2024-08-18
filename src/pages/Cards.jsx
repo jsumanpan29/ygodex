@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams, Link  } from 'react-router-dom'
 import cardBackImage from '../assets/CardBack.jpg';
 import { LuSwords, LuShield, LuCalendar } from "react-icons/lu";
 import { GiCardRandom } from "react-icons/gi";
@@ -24,7 +24,7 @@ const Cards = () => {
     })
     useEffect(() => {
         // console.log("show: "+pageState.num)
-        console.log("show: "+pageState.offset)
+        // console.log("show: "+pageState.offset)
         refetch()
     }, [pageState, name]);
     // const {data, isLoading, error, refetch, hasNextPage, fetchNextPage, isFetchingNextPage,  } = useInfiniteQuery({
@@ -119,7 +119,8 @@ const Cards = () => {
         </div>
         {data.data.map((data) => (
             // <p key={data.id}>{data.name}</p>
-            <div key={data.id} className='relative flex flex-col sm:flex-row items-center bg-base-100 mb-3 mx-8 rounded-md px-2 py-8'>
+            <Link key={data?.id} to={`/card/${data.id}`}>
+            <div  className='relative flex flex-col sm:flex-row items-center bg-base-100 mb-3 mx-8 rounded-md px-2 py-8'>
                 <div className="px-2 py-4">
                         {/* <div className="mask w-52 h-60 m-5">
                             <img src={cardBackImage} alt="Event Image" />
@@ -166,6 +167,7 @@ const Cards = () => {
                     <div className='text-sm text-center py-2'>{data?.desc}</div>
                 </div>
             </div>
+            </Link>
         ))}
         
         <div className="flex flex-col sm:flex-row mx-8 sm:mx-0 justify-center gap-4 my-4">
