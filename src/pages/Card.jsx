@@ -39,7 +39,7 @@ const Card = () => {
         </div>
         <div className="grid grid-cols-1 2xl:grid-cols-3 my-2 gap-10">
             <div className='flex flex-col col-span-1'>
-                <img className=" !w-[313px] 2xl:!w-full !min-w-[313px] !max-w-[444px] rounded-xl h-[458px] mx-auto" src={data[0]?.card_images[0]?.image_url ?? cardBackImage} alt="Event Image" />
+                <img className=" !w-[313px] 2xl:!w-full !min-w-[313px] !max-w-[444px] rounded-xl h-[458px] mx-auto" src={data[0]?.card_images[0]?.image_url ?? cardBackImage} alt="Card Image" />
                 <div className="flex flex-wrap justify-center 2xl:mt-2 mb-auto p-2 2xl:p-0">
                     {data[0]?.misc_info[0]?.formats?.map((e, index) => 
                         (
