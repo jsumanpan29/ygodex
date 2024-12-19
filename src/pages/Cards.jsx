@@ -93,9 +93,11 @@ const Cards = () => {
         window.history.pushState(undefined, undefined, window.location.origin + window.location.pathname + `?name=${encodeURIComponent(name)}&num=${pageState.num}&offset=${data.meta?.previous_page_offset}`)
     };
   return (
+    // <div className="main-cards container mx-auto flex-auto lg:px-[128px] xl:px-[256px] px-0" style={{overflow: hidden}}>// 
+    //No other solution for scrollbar overflow disrupting layout. Might add custom scrollbar in future!
     <div className="main-cards container mx-auto flex-auto lg:px-[128px] xl:px-[256px] px-0">
         {/* <div className="flex justify-center my-4"><h2 className='prose-lg'>{searchParams}</h2></div> */}
-        <div className="flex flex-col sm:flex-row mx-8 sm:mx-0 justify-center gap-4 my-4">
+        <div className="flex flex-col sm:flex-row mx-8 sm:mx-0 justify-center gap-4 my-4 oxanium-200">
             <button className="btn w-40 mx-auto sm:mx-0" 
                 disabled={data.meta?.previous_page_offset===undefined} 
                 onClick={prevPage}>Previous
@@ -119,58 +121,77 @@ const Cards = () => {
         </div>
         {data.data.map((data) => (
             // <p key={data.id}>{data.name}</p>
-            <Link key={data?.id} to={`/card/${data.id}`}>
-            <div  className='relative flex flex-col sm:flex-row items-center bg-base-100 mb-3 mx-8 rounded-md px-2 py-8'>
+            <Link key={data?.id} to={`../card/${data.id}`}>
+            <div  className='relative flex flex-col sm:flex-row items-center bg-base-100 mb-3 mx-8 rounded-md px-2 py-8 oxanium-200'>
                 <div className="px-2 py-4">
                         {/* <div className="mask w-52 h-60 m-5">
                             <img src={cardBackImage} alt="Event Image" />
                         </div> */}
 
                         {/* ----------- */}
-                        {/* <img className="!object-contain !w-[140px] !max-w-[140px] rounded-xl h-fit" src={cardBackImage} alt="Event Image" /> */}
                         <img className="!object-contain !w-[140px] !max-w-[140px] rounded-xl h-fit" src={data?.card_images[0]?.image_url ?? cardBackImage} alt="Card Image" />
+                        {/* <img className="!object-contain !w-[140px] !max-w-[140px] rounded-xl h-fit" src={} alt="Card Image" /> */}
                 </div>
                 <div className="flex flex-col w-full items-center h-48">
                     {/* <div className='text-xl font-medium pb-4'><h1>Sample</h1></div> */}
                     <div className='text-xl font-medium pb-4'><h1>{data?.name}</h1></div>
                     <div className='flex flex-row gap-4 pb-1'>
-                        <div className='text-sm flex gap-1'>
+                        {data?.type != null && (
+                            <div className='text-sm flex gap-1'>
                             <GiCardRandom className='text-lg' />
-                            {/* Type */}
-                            {data?.type}
-                        </div>
-                        <div className='text-sm flex gap-1'>
-                            <MdOutlineCategory className='text-lg' />
-                            {/* Race */}
-                            {data?.race}
-                        </div>
-                        <div className='text-sm flex gap-1'>
+                                {/* Type */}
+                                {data?.type}
+                            </div>
+                            )
+                        }
+                        {data?.race != null && (
+                            <div className='text-sm flex gap-1'>
+                                <MdOutlineCategory className='text-lg' />
+                                {/* Race */}
+                                {data?.race}
+                            </div>
+                            )
+                        }
+                        
+                        {data?.atk != null && (
+                            <div className='text-sm flex gap-1'>
                             <LuSwords className='text-lg' />
-                            {/* Atk */}
-                            {data?.atk}
-                        </div>
-                        <div className='text-sm flex gap-1'>
+                                {/* Atk */}
+                                {data?.atk}
+                            </div>
+                            )
+                        }
+                        {data?.def != null && (
+                            <div className='text-sm flex gap-1'>
                             <LuShield className='text-lg' />
-                            {/* Def */}
-                            {data?.def}
-                        </div>
-                        <div className='text-sm flex gap-1'>
-                            <LuCalendar className='text-lg' />
-                            TCG:{data?.misc_info[0]?.tcg_date}
-                            {/* {console.log("misc:"+JSON.stringify(data))} */}
-                        </div>
-                        <div className='text-sm flex gap-1'>
-                            <LuCalendar className='text-lg' />
-                            OCG:{data?.misc_info[0]?.ocg_date}
-                        </div>
+                                {/* Def */}
+                                {data?.def}
+                            </div>
+                            )
+                        }
+                        {data?.misc_info[0]?.tcg_date != null && (
+                            <div className='text-sm flex gap-1'>
+                                <LuCalendar className='text-lg' />
+                                TCG:{data?.misc_info[0]?.tcg_date}
+                                {/* {console.log("misc:"+JSON.stringify(data))} */}
+                            </div>
+                            )
+                        }
+                        {data?.misc_info[0]?.ocg_date != null && (
+                            <div className='text-sm flex gap-1'>
+                                <LuCalendar className='text-lg' />
+                                OCG:{data?.misc_info[0]?.ocg_date}
+                            </div>
+                            )
+                        }
                     </div>
-                    <div className='text-sm text-center py-2'>{data?.desc}</div>
+                    <div className='text-sm text-center py-2 '>{data?.desc}</div>
                 </div>
             </div>
             </Link>
         ))}
         
-        <div className="flex flex-col sm:flex-row mx-8 sm:mx-0 justify-center gap-4 my-4">
+        <div className="flex flex-col sm:flex-row mx-8 sm:mx-0 justify-center gap-4 my-4 oxanium-200">
             <button className="btn w-40 mx-auto sm:mx-0" 
                 disabled={data.meta?.previous_page_offset===undefined} 
                 onClick={prevPage}>Previous

@@ -11,7 +11,9 @@ const Card = () => {
         return filteredKeys.map(key => ({ key, value: obj[key] }));
     };
     const {data, isLoading, error} = useQuery({
-        queryKey: ['card'],
+        //Fix: formerly ['card'], made the query show old state before updated state. 
+        // ['card', id] Make the queryKey depend on the id. This ensures React Query caches data separately for each unique card ID.
+        queryKey: ['card', id],
         queryFn: async () =>  await API.get(`/cardinfo.php?misc=yes&id=${id}`)
             .then((res) => 
                 {
@@ -19,19 +21,19 @@ const Card = () => {
                     return result
                 }
             ),
+        enabled: !!id, // Only run the query if `id` exists
+        staleTime: 0, // Always fetch new data
+        cacheTime: id ? 5 * 60 * 1000 : 0, // Cache only if `id` exists, 5 minutes
         })
+        
     if (isLoading) return "Loading...";
     if (error) return "An error has occurred: " + error.message;
 
   return (
     <div className="container mx-auto flex-auto lg:px-[128px] xl:px-[256px] px-0">
         
-        {/* {console.log(data)} */}
-        {/* {data.map((e) => (
-            <>
-            </>
-        ))} */}
-        <div className="text-base breadcrumbs pt-10">
+        {console.log(data[0]?.id)}
+        <div className="text-base breadcrumbs pt-10 oxanium-200">
             <ul>
                 <li><a>Cards</a></li> 
                 <li>{data[0]?.id}</li>
@@ -45,107 +47,107 @@ const Card = () => {
                         (
                             (e.toLowerCase() === "goat" && data[0]?.banlist_info) || (e.toLowerCase() === "tcg" && data[0]?.banlist_info) || (e.toLowerCase() === "ocg" && data[0]?.banlist_info) ? 
                                  searchKeysWithWord(data[0]?.banlist_info, e.toLowerCase())[0]?.value.toLowerCase() === "banned" ?
-                                    <div key={index} className="badge badge-error m-0.5">{e}</div>
+                                    <div key={index} className="badge badge-error m-0.5 oxanium-200 text-white">{e}</div>
                                  :
                                     searchKeysWithWord(data[0]?.banlist_info, e.toLowerCase())[0]?.value.toLowerCase() === "limited" ?
-                                        <div key={index} className="badge badge-warning m-0.5">{e}</div>
+                                        <div key={index} className="badge badge-warning m-0.5 oxanium-200 text-white">{e}</div>
                                         :
                                             null
                             :
-                                <div key={index} className="badge badge-success m-0.5">{e}</div>
+                                <div key={index} className="badge badge-success m-0.5 oxanium-200 text-white">{e}</div>
                         )
                     )}
                 </div>
             </div>
             <div className='flex flex-col col-span-1 2xl:col-span-2'>
-                <div className='text-5xl font-semibold pb-2'>{data[0]?.name}</div>
+                <div className='text-5xl font-semibold pb-2 oxanium-200'>{data[0]?.name}</div>
                 <div className="divider !m-0"></div> 
                 <div className="grid grid-cols-3 gap-4 my-2 pb-4">
 
-                    {data[0]?.type && (
+                    {data[0]?.type != null &&  (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">Type</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.type}</div>
+                                <div className="stat-title text-xs oxanium-200">Type</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.type}</div>
                             </div>
                         </div>
                     )
                     }
-                    {data[0]?.attribute && (
+                    {data[0]?.attribute != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">Attribute</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.attribute}</div>
+                                <div className="stat-title text-xs oxanium-200">Attribute</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.attribute}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.race && (
+                    {data[0]?.race != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">Typing</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.race}</div>
+                                <div className="stat-title text-xs oxanium-200">Typing</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.race}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.race && (
+                    {data[0]?.race != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">Level/Rank</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.race}</div>
+                                <div className="stat-title text-xs oxanium-200">Level/Rank</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.race}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.atk && (
+                    {data[0]?.atk != null &&  (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">ATK</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.atk}</div>
+                                <div className="stat-title text-xs oxanium-200">ATK</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.atk}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.def && (
+                    {data[0]?.def != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">DEF</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.def}</div>
+                                <div className="stat-title text-xs oxanium-200">DEF</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.def}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.archetype && (
+                    {data[0]?.archetype != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">Archetype</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.archetype}</div>
+                                <div className="stat-title text-xs oxanium-200">Archetype</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.archetype}</div>
                             </div>
                         </div>
                         )
                     }   
-                    {data[0]?.misc_info[0]?.tcg_date && (
+                    {data[0]?.misc_info[0]?.tcg_date != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">TCG Date</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.misc_info[0]?.tcg_date}</div>
+                                <div className="stat-title text-xs oxanium-200">TCG Date</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.misc_info[0]?.tcg_date}</div>
                             </div>
                         </div>
                         )
                     }
-                    {data[0]?.misc_info[0]?.ocg_date && (
+                    {data[0]?.misc_info[0]?.ocg_date != null && (
                         <div className="stats shadow mx-auto w-52">
                             <div className="stat">
-                                <div className="stat-title text-xs">OCG Date</div>
-                                <div className="stat-value font-normal text-xl">{data[0]?.misc_info[0]?.ocg_date}</div>
+                                <div className="stat-title text-xs oxanium-200">OCG Date</div>
+                                <div className="stat-value font-normal text-xl  oxanium-400">{data[0]?.misc_info[0]?.ocg_date}</div>
                             </div>
                         </div>
                         )
                     }
                 </div>
-                <div className='text-3xl font-normal'>Description</div>
-                <div className='text-base font-normal p-2'>{data[0]?.desc}</div>
+                <div className='text-3xl font-normal oxanium-400'>Description</div>
+                <div className='text-base font-normal p-2 oxanium-200'>{data[0]?.desc}</div>
                 <div className="divider !m-0"></div> 
             </div>
         </div>
